@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Estantes</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+</head>
+
+<body class="container mt-5">
+
+<!-- Navegación -->
+<nav class="mb-4">
+
+    <a th:href="@{/productos}"
+       class="btn btn-outline-primary">
+        Productos
+    </a>
+
+    <a th:href="@{/estantes}"
+       class="btn btn-primary">
+        Estantes
+    </a>
+
+</nav>
+
+<h2>Registro de Estantes</h2>
+
+<!-- Formulario -->
+<form th:action="@{/estantes/guardar}"
+      th:object="${estante}"
+      method="post"
+      class="row g-3 mb-5">
+
+    <!-- ID oculto -->
+    <input type="hidden" th:field="*{id}">
+
+    <!-- Código -->
+    <div class="col-md-4">
+        <input type="text"
+               th:field="*{codigo}"
+               class="form-control"
+               placeholder="Código del estante"
+               required>
+    </div>
+
+    <!-- Ubicación -->
+    <div class="col-md-5">
+        <input type="text"
+               th:field="*{ubicacion}"
+               class="form-control"
+               placeholder="Ubicación"
+               required>
+    </div>
+
+    <!-- Guardar -->
+    <div class="col-md-3">
+        <button type="submit"
+                class="btn btn-success w-100">
+            Guardar
+        </button>
+    </div>
+
+</form>
+
+<h2>Listado de Estantes</h2>
+
+<table class="table table-striped">
+
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Código</th>
+        <th>Ubicación</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    <tr th:each="e : ${estantes}">
+
+        <td th:text="${e.id}"></td>
+
+        <td th:text="${e.codigo}"></td>
+
+        <td th:text="${e.ubicacion}"></td>
+
+        <td>
+
+            <a th:href="@{/estantes/editar/{id}(id=${e.id})}"
+               class="btn btn-warning btn-sm">
+                Editar
+            </a>
+
+            <a th:href="@{/estantes/eliminar/{id}(id=${e.id})}"
+               class="btn btn-danger btn-sm">
+                Eliminar
+            </a>
+
+        </td>
+
+    </tr>
+
+    </tbody>
+
+</table>
+
+</body>
+</html>

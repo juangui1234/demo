@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Productos</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+</head>
+
+<body class="container mt-5">
+
+<!-- Navegación -->
+<nav class="mb-4">
+
+    <a th:href="@{/productos}"
+       class="btn btn-primary">
+        Productos
+    </a>
+
+    <a th:href="@{/estantes}"
+       class="btn btn-outline-primary">
+        Estantes
+    </a>
+
+</nav>
+
+<h2>Registro de Productos</h2>
+
+<!-- Formulario de Registro y Edición -->
+<form th:action="@{/productos/guardar}"
+      th:object="${producto}"
+      method="post"
+      class="row g-3 mb-5">
+
+    <!-- ID oculto -->
+    <input type="hidden" th:field="*{id}">
+
+    <!-- Nombre -->
+    <div class="col-md-2">
+        <input type="text"
+               th:field="*{nombre}"
+               class="form-control"
+               placeholder="Nombre"
+               required>
+    </div>
+
+    <!-- Código -->
+    <div class="col-md-2">
+        <input type="text"
+               th:field="*{codigo}"
+               class="form-control"
+               placeholder="Código"
+               required>
+    </div>
+
+    <!-- Precio -->
+    <div class="col-md-2">
+        <input type="number"
+               step="0.01"
+               th:field="*{precio}"
+               class="form-control"
+               placeholder="Precio"
+               required>
+    </div>
+
+    <!-- Stock -->
+    <div class="col-md-2">
+        <input type="number"
+               th:field="*{stock}"
+               class="form-control"
+               placeholder="Stock"
+               required>
+    </div>
+
+    <!-- Estante -->
+    <div class="col-md-2">
+        <select th:field="*{estante}"
+                class="form-select"
+                required>
+
+            <option value="">
+                Seleccionar estante
+            </option>
+
+            <option th:each="e : ${estantes}"
+                    th:value="${e.id}"
+                    th:text="${e.codigo + ' - ' + e.ubicacion}">
+            </option>
+
+        </select>
+    </div>
+
+    <!-- Guardar -->
+    <div class="col-md-2">
+        <button type="submit"
+                class="btn btn-success w-100">
+            Guardar
+        </button>
+    </div>
+
+</form>
+
+<!-- Listado -->
+<h2>Listado</h2>
+
+<table class="table table-striped">
+
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Código</th>
+        <th>Precio</th>
+        <th>Stock</th>
+        <th>Estante</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    <tr th:each="p : ${productos}">
+
+        <td th:text="${p.id}"></td>
+
+        <td th:text="${p.nombre}"></td>
+
+        <td th:text="${p.codigo}"></td>
+
+        <td th:text="${p.precio}"></td>
+
+        <td th:text="${p.stock}"></td>
+
+        <!-- Estante del producto -->
+        <td>
+            <span th:if="${p.estante != null}"
+                  th:text="${p.estante.codigo + ' - ' + p.estante.ubicacion}">
+            </span>
+
+            <span th:if="${p.estante == null}">
+                Sin estante
+            </span>
+        </td>
+
+        <!-- Acciones -->
+        <td>
+
+            <a th:href="@{/productos/editar/{id}(id=${p.id})}"
+               class="btn btn-warning btn-sm">
+                Editar
+            </a>
+
+            <a th:href="@{/productos/eliminar/{id}(id=${p.id})}"
+               class="btn btn-danger btn-sm">
+                Eliminar
+            </a>
+
+        </td>
+
+    </tr>
+
+    </tbody>
+
+</table>
+
+</body>
+</html>

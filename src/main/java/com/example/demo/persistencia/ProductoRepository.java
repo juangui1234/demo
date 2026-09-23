@@ -1,6 +1,6 @@
-package persistencia;
+package com.example.demo.persistencia;
 
-import modelo.Producto;
+import com.example.demo.modelo.Producto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
