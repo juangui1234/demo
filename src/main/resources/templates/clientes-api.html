@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Clientes Externos</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+</head>
+
+<body class="container mt-5">
+
+<!-- Navegación -->
+<nav class="mb-4">
+
+    <a th:href="@{/productos}"
+       class="btn btn-outline-primary">
+        Productos
+    </a>
+
+    <a th:href="@{/estantes}"
+       class="btn btn-outline-primary">
+        Estantes
+    </a>
+
+    <a th:href="@{/clientes}"
+       class="btn btn-outline-primary">
+        Clientes
+    </a>
+
+    <a th:href="@{/clientes-externos}"
+       class="btn btn-primary">
+        Clientes Externos
+    </a>
+
+</nav>
+
+<!-- Título -->
+<h2>Clientes Externos</h2>
+
+<p class="text-muted mb-4">
+    Información obtenida desde un servicio externo mediante una API REST.
+</p>
+
+<!-- Tabla de clientes externos -->
+<div class="table-responsive">
+
+    <table class="table table-striped table-hover">
+
+        <thead class="table-dark">
+
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Teléfono</th>
+            <th>Ciudad</th>
+            <th>Dirección</th>
+            <th>Código Postal</th>
+        </tr>
+
+        </thead>
+
+        <tbody>
+
+        <tr th:each="c : ${clientesExternos}">
+
+            <td th:text="${c.id}"></td>
+
+            <td th:text="${c.name}"></td>
+
+            <td th:text="${c.email}"></td>
+
+            <td th:text="${c.phone}"></td>
+
+            <td th:text="${c.address.city}"></td>
+
+            <td th:text="${c.address.street}"></td>
+
+            <td th:text="${c.address.zipcode}"></td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+</body>
+</html>
