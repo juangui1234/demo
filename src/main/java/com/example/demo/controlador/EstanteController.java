@@ -1,7 +1,7 @@
 package com.example.demo.controlador;
 
 import com.example.demo.modelo.Estante;
-import com.example.demo.persistencia.EstanteRepository;
+import com.example.demo.service.EstanteService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,18 +14,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/estantes")
 public class EstanteController {
 
-    private final EstanteRepository estanteRepository;
+    private final EstanteService estanteService;
 
-    public EstanteController(EstanteRepository estanteRepository) {
-        this.estanteRepository = estanteRepository;
+    public EstanteController(EstanteService estanteService) {
+        this.estanteService = estanteService;
     }
 
     // Listar estantes
     @GetMapping
     public String listar(Model model) {
 
-        model.addAttribute("estantes", estanteRepository.findAll());
-        model.addAttribute("estante", new Estante());
+        model.addAttribute(
+                "estantes",
+                estanteService.listarEstantes()
+        );
+
+        model.addAttribute(
+                "estante",
+                new Estante()
+        );
 
         return "estantes";
     }
@@ -34,7 +41,7 @@ public class EstanteController {
     @PostMapping("/guardar")
     public String guardar(@ModelAttribute Estante estante) {
 
-        estanteRepository.save(estante);
+        estanteService.guardarEstante(estante);
 
         return "redirect:/estantes";
     }
@@ -43,12 +50,17 @@ public class EstanteController {
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable Long id, Model model) {
 
-        Estante estante = estanteRepository
-                .findById(id)
-                .orElse(new Estante());
+        Estante estante = estanteService.buscarPorId(id);
 
-        model.addAttribute("estantes", estanteRepository.findAll());
-        model.addAttribute("estante", estante);
+        model.addAttribute(
+                "estantes",
+                estanteService.listarEstantes()
+        );
+
+        model.addAttribute(
+                "estante",
+                estante
+        );
 
         return "estantes";
     }
@@ -57,8 +69,13 @@ public class EstanteController {
     @GetMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Long id) {
 
-        estanteRepository.deleteById(id);
+        boolean eliminado = estanteService.eliminarEstante(id);
 
-        return "redirect:/estantes";
+        if (!eliminado) {
+            return "redirect:/estantes?error=productos";
+        }
+
+        return "redirect:/estantes?eliminado=true";
     }
+
 }
