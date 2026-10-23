@@ -40,7 +40,7 @@ public class ProductoController {
                 productoService.listarEstantes()
         );
 
-        return "index";
+        return "productos";
     }
 
     // Crear o actualizar producto
@@ -73,7 +73,7 @@ public class ProductoController {
                 productoService.listarEstantes()
         );
 
-        return "index";
+        return "productos";
     }
 
     // Eliminar producto
